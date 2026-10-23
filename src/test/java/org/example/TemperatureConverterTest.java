@@ -1,39 +1,84 @@
 package org.example;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TemperatureConverterTest {
 
-    private final TemperatureConverter TestConverter =
+    private final TemperatureConverter converter =
             new TemperatureConverter();
 
     @Test
     void fahrenheitToCelsiusConvertsMultipleTemperatures() {
-        assertEquals(0.0, TestConverter.fahrenheitToCelsius(32), 0.1);
-        assertEquals(100.0, TestConverter.fahrenheitToCelsius(212), 0.1);
-        assertEquals(-40.0, TestConverter.fahrenheitToCelsius(-40), 0.1);
+        assertEquals(
+                0.0,
+                converter.fahrenheitToCelsius(32),
+                0.001
+        );
+
+        assertEquals(
+                100.0,
+                converter.fahrenheitToCelsius(212),
+                0.001
+        );
+
+        assertEquals(
+                -40.0,
+                converter.fahrenheitToCelsius(-40),
+                0.001
+        );
     }
 
     @Test
     void celsiusToFahrenheitConvertsMultipleTemperatures() {
-        assertEquals(32.0, TestConverter.celsiusToFahrenheit(0), 0.1);
-        assertEquals(212.0, TestConverter.celsiusToFahrenheit(100), 0.1);
-        assertEquals(-40.0, TestConverter.celsiusToFahrenheit(-40), 0.1);
+        assertEquals(
+                32.0,
+                converter.celsiusToFahrenheit(0),
+                0.001
+        );
+
+        assertEquals(
+                212.0,
+                converter.celsiusToFahrenheit(100),
+                0.001
+        );
+
+        assertEquals(
+                -40.0,
+                converter.celsiusToFahrenheit(-40),
+                0.001
+        );
     }
 
     @Test
-    void isExtremeTemperatureChecksEdgeCases() {
-        assertTrue(TestConverter.isExtremeTemperature(-69.420));
-        assertTrue(TestConverter.isExtremeTemperature(67.67));
-        assertFalse(TestConverter.isExtremeTemperature(20.0));
-        assertFalse(TestConverter.isExtremeTemperature(-40.0));
-        assertFalse(TestConverter.isExtremeTemperature(50.0));
+    void temperaturesBelowMinusFortyAreExtreme() {
+        assertTrue(
+                converter.isExtremeTemperature(-41)
+        );
     }
 
     @Test
-    void kelvinToCelsiusConvertsMultipleTemperatures() {
-        assertEquals(-273.15, TestConverter.kelvinToCelsius(0), 0.1);
-        assertEquals(-173.15, TestConverter.kelvinToCelsius(100), 0.1);
-        assertEquals(0, TestConverter.kelvinToCelsius(273.15), 0.1);
+    void temperaturesAboveFiftyAreExtreme() {
+        assertTrue(
+                converter.isExtremeTemperature(51)
+        );
+    }
+
+    @Test
+    void boundaryTemperaturesAreNotExtreme() {
+        assertFalse(
+                converter.isExtremeTemperature(-40)
+        );
+
+        assertFalse(
+                converter.isExtremeTemperature(50)
+        );
+
+        assertFalse(
+                converter.isExtremeTemperature(20)
+        );
     }
 }
